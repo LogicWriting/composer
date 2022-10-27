@@ -1,0 +1,18 @@
+{
+    "name": "zhangzheng/composer",
+    "description": "composer",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Zhangzheng\\Composer\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "zhengzheng",
+            "email": "477633585@qq.com"
+        }
+    ],
+    "require": {}
+}
