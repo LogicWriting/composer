@@ -14,5 +14,8 @@
             "email": "477633585@qq.com"
         }
     ],
-    "require": {}
+    "require": {
+        "firebase/php-jwt": "^6.3",
+        "yansongda/pay": "^2.10"
+    }
 }
