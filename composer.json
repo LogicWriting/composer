@@ -15,7 +15,5 @@
         }
     ],
     "require": {
-        "firebase/php-jwt": "^6.3",
-        "yansongda/pay": "^2.10"
     }
 }
