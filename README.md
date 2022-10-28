@@ -22,10 +22,14 @@ China-Lishuo-Cloud云存储
 composer require china-lishuo/oss-utils
 ```
 
-Yansongda支付
+Yansongda2.0
 ====
 
 ```bash
+支付前的配置文件
+composer require symfony/psr-http-message-bridge
+
+Composer
 composer require yansongda/pay:^2.10 -vvv
 ```
 
@@ -48,6 +52,21 @@ composer require topthink/think-throttle
 
 ```bash
 composer require simplesoftwareio/simple-qrcode 1.3.*
+
+
+Laravel配置参数 app文件
+SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class
+
+'QrCode' => SimpleSoftwareIO\QrCode\Facades\QrCode::class
+
+方法
+try {
+QrCode::encoding('UTF-8')->format('png')->generate('https://www.baidu.com/',public_path('image/'.time().'.png'));
+return '生成成功';
+}catch (\Exception $exception){
+return fail($exception->getCode(),$exception->getMessage());
+}
+
 ```
 
 Excel导出 未使用过

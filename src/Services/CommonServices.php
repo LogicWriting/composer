@@ -7,6 +7,47 @@ namespace Zhangzheng\Composer\Services;
  */
 class CommonServices
 {
+    /**
+     * @Desc:
+     * @param $msg
+     * @param $data
+     * @param $code
+     * @return false|string
+     * 由 PhpStorm 创建
+     * @author: 章政
+     * @Date Time: 2022/10/27 22:38
+     * 描述：统一Json返回成功
+     */
+    public static function success($msg = '' , $data = [] ,$code = 200)
+    {
+        return json_encode([
+            'msg' => $msg ,
+            'data' => $data ,
+            'code' => $code
+        ]);
+    }
+
+    /**
+     * @Desc:
+     * @param $msg
+     * @param $data
+     * @param $code
+     * @return false|string
+     * 由 PhpStorm 创建
+     * @author: 章政
+     * @Date Time: 2022/10/27 22:38
+     * 描述：统一Json错误返回
+     */
+    public static function fail($msg = '' , $data = [] ,$code = 10000)
+    {
+        return json_encode([
+            'msg' => $msg ,
+            'data' => $data ,
+            'code' => $code
+        ]);
+    }
+
+
 
 
 }
