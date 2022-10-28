@@ -34,7 +34,7 @@ EOD;
 return [
     "privateKey" => $privateKey,
     "publicKey" => $publicKey,
-    "OssID" => "LTAI5tKM8Dw2W7rhoka9wa3z",
-    "OssSecret" => "9sa6wyapFBKQI8GJZH8vO8l384sAdz",
+    "OssID" => "ZZLTAI5tKM8Dw2W7rhoka9wa3z",
+    "OssSecret" => "ZZ9sa6wyapFBKQI8GJZH8vO8l384sAdz",
 
 ];
