@@ -34,7 +34,8 @@ EOD;
 return [
     "privateKey" => $privateKey,
     "publicKey" => $publicKey,
-    "OssID" => "ZZLTAI5tKM8Dw2W7rhoka9wa3z",
-    "OssSecret" => "ZZ9sa6wyapFBKQI8GJZH8vO8l384sAdz",
-
+    "QNOssID" => "N_J4bm2koNcTVknqUP1gqwvpYboI1HnrL2E-smZ1",
+    "QNOssSecret" => "6G54VGYKvbdvLEwEbz4MJhkHatAmcfJ1coJzJRc1",
+    "ali_oss_accessKey_id" => "LTAI5tKM8Dw2W7rhoka9wa3z",
+    "ali_oss_accessKey_secret" => "9sa6wyapFBKQI8GJZH8vO8l384sAdz",
 ];

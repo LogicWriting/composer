@@ -1,5 +1,5 @@
 <?php
-namespace Zhangzheng\Composer\Services;
+namespace App\Services;
 
 /**
  * 作者：本

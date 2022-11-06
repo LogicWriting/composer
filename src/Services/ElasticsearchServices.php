@@ -5,7 +5,9 @@
  * 格言：如果你是这个房间中最聪明的，那么你走错房间了
  */
 
-namespace Zhangzheng\Composer\Services;
+namespace App\Services;
+
+use Elastic\Elasticsearch\ClientBuilder;
 
 class ElasticsearchServices
 {
@@ -16,35 +18,30 @@ class ElasticsearchServices
      * @Date Time: 2022/10/27 20:44
      * 描述：初始化创建索引
      */
-    public function Init()
+    public static function Init($index , $field)
     {
         $hosts = [
             '127.0.0.1:9200'
         ];
-        $client = \Elasticsearch\ClientBuilder::create()->setHosts($hosts)->build();
+        $client = ClientBuilder::create()->setHosts($hosts)->build();
         // 创建索引
         $params = [
-            'index' => 'goods',
+            'index' => $index,
             'body' => [
                 'settings' => [
                     'number_of_shards' => 5,
                     'number_of_replicas' => 1
                 ],
                 'mappings' => [
-                    '_doc' => [
-                        '_source' => [
-                            'enabled' => true
-                        ],
                         'properties' => [
                             'title' => [
                                 'type' => 'keyword'
                             ],
-                            'desn' => [
+                            $field => [
                                 'type' => 'text',
                                 'analyzer' => 'ik_max_word',
                                 'search_analyzer' => 'ik_max_word'
                             ]
-                        ]
                     ]
                 ]
             ]
@@ -59,21 +56,18 @@ class ElasticsearchServices
      * @Date Time: 2022/10/27 20:44
      * 描述：写入文档
      */
-    public function SaveDoc()
+    public static function SaveDoc($createData , $index , $model)
     {
         $hosts = [
             '127.0.0.1:9200',
         ];
-        $client = \Elasticsearch\ClientBuilder::create()->setHosts($hosts)->build();
+        $client = ClientBuilder::create()->setHosts($hosts)->build();
         // 写文档
         $params = [
-            'index' => 'goods',
+            'index' => $index,
             'type' => '_doc',
             'id' => $model->id,
-            'body' => [
-                'title' => $model->title,
-                'desn' => $model->desn,
-            ],
+            'body' => $createData
         ];
         $response = $client->index($params);
     }
@@ -89,12 +83,12 @@ class ElasticsearchServices
      * @Date Time: 2022/10/27 20:44
      * 描述：搜索
      */
-    public function Search($indexName, $field = '', $queryVal = '')
+    public static function Search($indexName, $field = '', $queryVal = '')
     {
         $hosts = [
             '127.0.0.1:9200',
         ];
-        $client = \Elasticsearch\ClientBuilder::create()->setHosts($hosts)->build();
+        $client = ClientBuilder::create()->setHosts($hosts)->build();
         $params = [
             'index' => $indexName,
             'type' => '_doc',
@@ -106,8 +100,8 @@ class ElasticsearchServices
                         ]
                     ]
                 ], 'highlight' => [
-                    'pre_tags' => [""],
-                    'post_tags' => [''],
+                    'pre_tags' => ["<span style='color: red'>"],
+                    'post_tags' => ['</span>'],
                     'fields' => [
                         'fang_name' => new \stdClass()
                     ]

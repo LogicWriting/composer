@@ -4,11 +4,15 @@
  * 创建时间：2022/10/27 22:38
  * 格言：如果你是这个房间中最聪明的，那么你走错房间了
  */
+namespace App\Services;
 
-namespace Zhangzheng\Composer\Services;
+use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
 
 class JwtServices
 {
+
+
     /**
      * @Desc:
      * 由 PhpStorm 创建

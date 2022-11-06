@@ -1,6 +1,7 @@
 <?php
 
-namespace Zhangzheng\Composer\Services;
+namespace App\Services;
+
 /**
  * 作者：本
  * 创建时间：2022/10/27 19:46
@@ -49,33 +50,22 @@ class CommonServices
     }
 
 
-    //递归函数 实现无限级分类列表
-    function get_cate_list($list, $pid = 0, $level = 0)
+    /**
+     * Created by PhpStorm
+     * Name：paginaTion
+     * User: 立早正文
+     * DateTime: 2022/11/5 11:39
+     * Desc：原生分页 得到每页条数和偏移量
+     */
+    public static function paginaTion($page, $limit, $count)
     {
-        static $tree = array();
-        foreach ($list as $row) {
-            if ($row['pid'] == $pid) {
-                $row['level'] = $level;
-                $tree[] = $row;
-                $this->get_cate_list($list, $row['id'], $level + 1);
-            }
-        }
-        return $tree;
+        $page = $page < 1 ? 1 : $page;
+        $limit = $limit > $count ? $count : $limit;
+        if (!is_numeric($page)) abort(1,"当前页必须是数字");
+        if (!is_numeric($limit)) abort(1,"每页截取有误");
+        $offset = ($page - 1) / $limit;
+        return [intval($offset),intval($limit)];
     }
 
-    //封装父子结构
-    //传进数据和父类id
-    function father($data, $pid = 0)
-    {
-        $child = [];
-        foreach ($data as $v) {
-            if ($v['pid'] == $pid) {
-                $child[$v['id']] = $v;
-                $child[$v['id']]['son'] = $this->father($data, $v['id']);
-                print_r($v);
-            }
-        }
-        return $child;
-    }
 
 }
