@@ -1,161 +1,98 @@
 ```
 小程序端
+// pages/chat/chat.js
 Page({
 
-    /**
-     * 页面的初始数据
-     */
-    data: {
-        list: []
-    },
-
-    /**
-     * 生命周期函数--监听页面加载
-     */
-    onLoad: function (options) {
+  /**
+   * 页面的初始数据
+   */
+  data: {
+    msgList: [],
+    newMsg: "",
+    my: "zhengwen",
+    to: "zhonzhon"
+  },
 
 
-        this.setData({
-            id:options.id
+
+  /**
+   * 生命周期函数--监听页面加载
+   */
+  onLoad(options) {
+    this.openSocket();
+  },
+  clickSubmit() {
+    let newMsg = this.data.newMsg;
+    let list = this.data.msgList;
+    console.log(1111);
+    let msg = {
+      'type': "send",
+      'my': this.data.my,
+      'to': this.data.to,
+      'msg': newMsg
+    };
+    this.sendMsg(msg);
+    list = list.concat(msg);
+    this.setData({
+      msgList:list
+    })
+    console.log(this.data.msgList);
+  },
+  linkInput(res) {
+    this.setData({
+      newMsg: res.detail.value
+    })
+  },
+  openSocket() {
+    wx.connectSocket({
+      url: 'ws://110.40.207.218:9502',
+      success: res => {
+        wx.onSocketOpen((result) => {
+          console.log(result);
+          let msg = {
+            'type': "open",
+            'my': this.data.my
+          };
+          this.sendMsg(msg);
+          this.onSockectMessage();
         })
+      }
+    })
+  },
+
+  sendMsg(res) {
+    res = JSON.stringify(res);
+    wx.sendSocketMessage({
+      data: res,
+    })
+  },
+
+  onSockectMessage() {
+    wx.onSocketMessage((result) => {
+      let newMsg = JSON.parse(result.data);
+      let oldMsg = this.data.msgList;
+      oldMsg = oldMsg.concat(newMsg);
+      this.setData({
+        msgList:oldMsg
+      });
+      console.log(oldMsg);
+    })
+  },
 
 
 
 
-        this.websocketXin();
-        var that = this
-        wx.connectSocket({
-            url: 'ws://8.141.163.251:9502',
-            success: function (res) {
-                wx.onSocketOpen((result) => {
-                    var send = {
-                        'my': 'a',
-                        'to': 'b',
-                        'type': 'open'
-                    };
-                    that.send(JSON.stringify(send))
-                })
-            }
-        })
-        wx.onSocketMessage((result) => {
-            console.log(result.data)
-            var list = this.data.list
-            var arr = {
-                'class': 'you',
-                'msg': result.data
-            }
-            list.push(arr);
-            this.setData({
-                list: list
-            })
-        })
-    },
-
-    send: function (data) {
-        wx.sendSocketMessage({
-            data: data,
-        })
-    },
-    txt: function (res) {
-        this.setData({
-            txt: res.detail.value
-        })
-    },
-    btn: function (res) {
-        var txt = this.data.txt
-        var that = this 
-
-        var send = {
-            'my': 'a',
-            'to': 'b',
-            'type': 'send',
-            'msg': txt
-        }
-
-
-        var list = this.data.list
-        list.push({
-            'class': 'my',
-            'msg': txt
-        });
-        this.setData({
-            list: list
-        })
-        console.log(this.data.list)
-        this.send(JSON.stringify(send));
-    },
-    websocketXin: function () {
-        var that = this
-        var send = {
-            'my': 'a',
-            'type': 'xin',
-        }
-        var time = setInterval(() => {
-            this.send(JSON.stringify(send))
-            console.log('当前心跳已重新链接')
-        },50000);
-    },
-    close:function()
-    {
-        wx.closeSocket({
-          code: 1000,
-        })
-        wx.reLaunch({
-            url: '/pages/index/index',
-          })
-    },
-    /**
-     * 生命周期函数--监听页面初次渲染完成
-     */
-    onReady: function () {
-
-    },
-
-    /**
-     * 生命周期函数--监听页面显示
-     */
-    onShow: function () {
-
-    },
-
-    /**
-     * 生命周期函数--监听页面隐藏
-     */
-    onHide: function () {
-
-    },
-
-    /**
-     * 生命周期函数--监听页面卸载
-     */
-    onUnload: function () {
-
-    },
-
-    /**
-     * 页面相关事件处理函数--监听用户下拉动作
-     */
-    onPullDownRefresh: function () {
-
-    },
-
-    /**
-     * 页面上拉触底事件的处理函数
-     */
-    onReachBottom: function () {
-
-    },
-
-    /**
-     * 用户点击右上角分享
-     */
-    onShareAppMessage: function () {
-
-    }
+  clickOut() {
+    wx.closeSocket({
+      success: res => {
+        console.log('退出成功');
+      }
+    })
+  }
 })
 ```
 
-```angular2html
+```
 服务端
  <?php
 //创建WebSocket Server对象，监听0.0.0.0:9502端口
